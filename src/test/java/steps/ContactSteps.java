@@ -30,27 +30,4 @@ public class ContactSteps {
     Assertions.assertEquals("Success! Your details have been submitted successfully.", uploadConfirmation);
 
     }
-
-    @Given("i access the home page")
-    public void i_access_the_home_page() {
-
-    }
-    @When("i click the button to access the Test Cases page")
-    public void i_click_the_button_to_access_the_test_cases_page() {
-
-    }
-    @Then("i get successfully redirected to the Test Cases page")
-    public void i_get_successfully_redirected_to_the_test_cases_page() {}
-
-
-    @Given("i accessed the Products page")
-    public void i_accessed_the_products_page() {}
-
-    @When("i click on the first item view product button")
-    public void i_click_on_the_first_item_view_product_button() {}
-
-
-    @Then("i get successfully redirected to the product details page")
-    public void i_get_successfully_redirected_to_the_product_details_page() {}
-
 }

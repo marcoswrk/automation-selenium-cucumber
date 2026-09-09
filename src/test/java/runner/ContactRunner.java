@@ -9,5 +9,4 @@ import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 @Suite
 @SelectClasspathResource("contact.feature")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "steps,hooks")
-public class ContactRunner {
-}
+public class ContactRunner {}

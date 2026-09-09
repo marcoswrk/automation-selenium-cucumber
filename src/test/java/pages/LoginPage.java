@@ -1,17 +1,13 @@
 package pages;
+
 import static core.DriverFactory.getDriver;
-
 import org.openqa.selenium.By;
-
 import core.BasePage;
 
 public class LoginPage extends BasePage {
 
-<<<<<<< HEAD
-    public void acessarLoginPage() {
-=======
+
     public void accessLoginPage() {
->>>>>>> b119548 (mensagem explicando a alteração)
         getDriver().get("https://automationexercise.com/login");
     }
 
@@ -24,9 +20,10 @@ public class LoginPage extends BasePage {
     public void clickLoginButton() {
         clickCss("[data-qa='login-button']");
     }
-public String getLoggedUser() {
-    return getText(By.cssSelector("li a b"));
-}
+
+    public String getLoggedUser() {
+    return getText(By.cssSelector("['fa fa-user']"));
+    }
 
     public void incorrectLogin () {
         sendKeysCss("[data-qa='login-email']", "email@incorreto.com");

@@ -1,17 +1,12 @@
 package pages;
 
 import core.BasePage;
-import static core.DriverFactory.getDriver;
 import static utils.TestData.*;
 import org.openqa.selenium.By;
 import java.io.File;
-import pages.SignUpPage;
+
 
 public class ContactPage extends BasePage {
-
-    public void accessHomePage () {
-        getDriver().get("https://automationexercise.com/");
-    }
 
     public void setName() {
         SignUpPage signUpPage = new SignUpPage();

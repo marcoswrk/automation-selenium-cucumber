@@ -1,20 +1,12 @@
 package core;
-<<<<<<< HEAD
-=======
-import org.openqa.selenium.Alert;
->>>>>>> b119548 (mensagem explicando a alteração)
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-<<<<<<< HEAD
-=======
 import java.io.File;
->>>>>>> b119548 (mensagem explicando a alteração)
 import java.time.Duration;
+import java.util.List;
 
 
 public abstract class BasePage {
@@ -24,7 +16,7 @@ public abstract class BasePage {
 
     public BasePage() {
         this.driver = DriverFactory.getDriver();
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
     
     public void sendKeys(By locator, String texto) {
@@ -36,10 +28,10 @@ public abstract class BasePage {
     public void sendKeys(String id_campo, String texto) {
         sendKeys(By.id(id_campo), texto);
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> b119548 (mensagem explicando a alteração)
+
+
+
     public void sendKeysCss(String css_id, String texto) {
         sendKeys(By.cssSelector(css_id), texto);
     }
@@ -55,18 +47,12 @@ public abstract class BasePage {
     public void clickCss(String css_id) {
         click(By.cssSelector(css_id));
     }
-<<<<<<< HEAD
 
     public void clickLink (String link) {
-        click(By.linkText(link));
+        click(By.partialLinkText(link));
     }
 
-=======
-    public void clickLink (String link) {
-        click(By.linkText(link));
-    }
->>>>>>> b119548 (mensagem explicando a alteração)
-    public void clickById (String id) {
+      public void clickById (String id) {
         click(By.id(id));
     }
 
@@ -77,19 +63,58 @@ public abstract class BasePage {
         Select combo = new Select(element);
         combo.selectByVisibleText(valor);
     }
-<<<<<<< HEAD
-=======
 
     public void acceptAlert() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
     }
 
     public void dismissAlert() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().dismiss();
     }
->>>>>>> b119548 (mensagem explicando a alteração)
+
+    //Tratamento de anúncios da página
+    private void dealWithGoogleVignette() {
+        try {
+
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+            List<WebElement> iframes = driver.findElements(By.cssSelector("iframe[id^='aswift_'], iframe[id^='google_ads_iframe_']"));
+
+            for (WebElement iframe : iframes) {
+                try {
+                    driver.switchTo().frame(iframe);
+
+                    List<WebElement> dismissBtn = driver.findElements(By.cssSelector("#dismiss-button, div[aria-label='Close ad']"));
+                    if (!dismissBtn.isEmpty() && dismissBtn.get(0).isDisplayed()) {
+                        shortWait.until(ExpectedConditions.elementToBeClickable(dismissBtn.get(0))).click();
+                        driver.switchTo().defaultContent();
+                        return;
+                    }
+
+                    List<WebElement> innerIframe = driver.findElements(By.id("ad_iframe"));
+                    if (!innerIframe.isEmpty()) {
+                        driver.switchTo().frame(innerIframe.get(0));
+                        WebElement innerDismiss = driver.findElement(By.cssSelector("#dismiss-button, div[aria-label='Close ad']"));
+                        shortWait.until(ExpectedConditions.elementToBeClickable(innerDismiss)).click();
+                        driver.switchTo().defaultContent();
+                        return;
+                    }
+                    driver.switchTo().defaultContent();
+                } catch (Exception e) {
+                    driver.switchTo().defaultContent();
+                }
+            }
+            if (driver.getCurrentUrl().contains("#google_vignette")) {
+                driver.navigate().refresh();
+            }
+
+        } catch (Exception e) {
+        } finally {
+            driver.switchTo().defaultContent();
+        }
+    }
+
 }

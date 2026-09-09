@@ -3,18 +3,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.junit.jupiter.api.Assertions;
-<<<<<<< HEAD
-
-=======
->>>>>>> b119548 (mensagem explicando a alteração)
 import pages.LoginPage;
 import pages.SignUpPage;
 import utils.TestCredentials;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> b119548 (mensagem explicando a alteração)
 public class RegistrationSteps {
 
     private SignUpPage signUpPage;
@@ -38,11 +31,8 @@ public class RegistrationSteps {
         signUpPage.selectOffers();
         signUpPage.setAddress();
         //Imprimir para referência de Login
-        //System.out.println("Email gerado: " + signUpPage.getGeneratedEmail());
-<<<<<<< HEAD
-=======
-        //System.out.println("Password gerado: " + signUpPage.getGeneratedPassword());
->>>>>>> b119548 (mensagem explicando a alteração)
+        System.out.println("Email gerado: " + signUpPage.getGeneratedEmail());
+        System.out.println("Password gerado: " + signUpPage.getGeneratedPassword());
         signUpPage.clickCreateAccountButton();
         
     }
@@ -56,11 +46,7 @@ public class RegistrationSteps {
     @Given("i click on the login button")
     public void i_click_on_the_login_button() {
         loginPage = new LoginPage();
-<<<<<<< HEAD
-        loginPage.acessarLoginPage();
-=======
         loginPage.accessLoginPage();
->>>>>>> b119548 (mensagem explicando a alteração)
     }
 
     @When("i put registered credentials")
@@ -71,17 +57,13 @@ public class RegistrationSteps {
     @Then("i get the login completed")
     public void i_get_the_login_completed() {
         String loggedUser = loginPage.getLoggedUser();
-        Assertions.assertEquals("Dr. Connie Tremblay", loggedUser);
+        Assertions.assertEquals(" Logged in as ", loggedUser);
     }
 
     @Given("i click on the login button to login")
     public void i_click_on_the_login_button_to_login() {
      loginPage = new LoginPage();
-<<<<<<< HEAD
-     loginPage.acessarLoginPage();
-=======
      loginPage.accessLoginPage();
->>>>>>> b119548 (mensagem explicando a alteração)
     }
 
     @When("i register wrong credentials")
@@ -98,11 +80,7 @@ public class RegistrationSteps {
     @Given("i am already logged")
     public void i_am_already_logged() {
         loginPage = new LoginPage();
-<<<<<<< HEAD
-        loginPage.acessarLoginPage();
-=======
         loginPage.accessLoginPage();
->>>>>>> b119548 (mensagem explicando a alteração)
         loginPage.login(TestCredentials.EMAIL, TestCredentials.PASSWORD);
     }
 

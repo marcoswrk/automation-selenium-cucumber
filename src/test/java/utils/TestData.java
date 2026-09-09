@@ -52,9 +52,6 @@ public class TestData {
         return faker.phoneNumber().phoneNumber();
     }
 
-<<<<<<< HEAD
-=======
     public static String generateLorem() {return faker.lorem().word();}
 
->>>>>>> b119548 (mensagem explicando a alteração)
 }
