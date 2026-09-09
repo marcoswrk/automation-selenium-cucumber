@@ -22,6 +22,10 @@ public class SignUpPage extends BasePage {
         generatedEmail = TestData.generateRandomEmail();
         sendKeysCss("[data-qa='signup-email']", generatedEmail);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b119548 (mensagem explicando a alteração)
     public void setCredentialsEmail(String email){
         generatedEmail = email;
         sendKeysCss("[data-qa='signup-email']", generatedEmail);

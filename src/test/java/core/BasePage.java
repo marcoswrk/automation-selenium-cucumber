@@ -1,4 +1,8 @@
 package core;
+<<<<<<< HEAD
+=======
+import org.openqa.selenium.Alert;
+>>>>>>> b119548 (mensagem explicando a alteração)
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,6 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+<<<<<<< HEAD
+=======
+import java.io.File;
+>>>>>>> b119548 (mensagem explicando a alteração)
 import java.time.Duration;
 
 
@@ -28,7 +36,10 @@ public abstract class BasePage {
     public void sendKeys(String id_campo, String texto) {
         sendKeys(By.id(id_campo), texto);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b119548 (mensagem explicando a alteração)
     public void sendKeysCss(String css_id, String texto) {
         sendKeys(By.cssSelector(css_id), texto);
     }
@@ -44,11 +55,17 @@ public abstract class BasePage {
     public void clickCss(String css_id) {
         click(By.cssSelector(css_id));
     }
+<<<<<<< HEAD
 
     public void clickLink (String link) {
         click(By.linkText(link));
     }
 
+=======
+    public void clickLink (String link) {
+        click(By.linkText(link));
+    }
+>>>>>>> b119548 (mensagem explicando a alteração)
     public void clickById (String id) {
         click(By.id(id));
     }
@@ -60,4 +77,19 @@ public abstract class BasePage {
         Select combo = new Select(element);
         combo.selectByVisibleText(valor);
     }
+<<<<<<< HEAD
+=======
+
+    public void acceptAlert() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+    }
+
+    public void dismissAlert() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().dismiss();
+    }
+>>>>>>> b119548 (mensagem explicando a alteração)
 }

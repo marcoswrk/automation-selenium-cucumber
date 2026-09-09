@@ -7,7 +7,11 @@ import core.BasePage;
 
 public class LoginPage extends BasePage {
 
+<<<<<<< HEAD
     public void acessarLoginPage() {
+=======
+    public void accessLoginPage() {
+>>>>>>> b119548 (mensagem explicando a alteração)
         getDriver().get("https://automationexercise.com/login");
     }
 
