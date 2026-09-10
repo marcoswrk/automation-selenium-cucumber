@@ -42,6 +42,7 @@ public abstract class BasePage {
 
     public void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        dealWithGoogleVignette();
     }
 
     public void clickCss(String css_id) {
@@ -51,8 +52,11 @@ public abstract class BasePage {
     public void clickLink (String link) {
         click(By.partialLinkText(link));
     }
+    public void clickLinkCss (String link) {
+        click(By.cssSelector(link));
+    }
 
-      public void clickById (String id) {
+    public void clickById (String id) {
         click(By.id(id));
     }
 
@@ -74,6 +78,12 @@ public abstract class BasePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().dismiss();
+    }
+
+    public void clickWithScroll(By locator) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        element.click();
     }
 
     //Tratamento de anúncios da página
@@ -116,5 +126,4 @@ public abstract class BasePage {
             driver.switchTo().defaultContent();
         }
     }
-
 }
