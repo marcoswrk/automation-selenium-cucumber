@@ -1,13 +1,13 @@
 package core;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.File;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-
+import core.Cart;
 
 public abstract class BasePage {
 
@@ -28,9 +28,6 @@ public abstract class BasePage {
     public void sendKeys(String id_campo, String texto) {
         sendKeys(By.id(id_campo), texto);
     }
-
-
-
 
     public void sendKeysCss(String css_id, String texto) {
         sendKeys(By.cssSelector(css_id), texto);
@@ -69,13 +66,11 @@ public abstract class BasePage {
     }
 
     public void acceptAlert() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
     }
 
     public void dismissAlert() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().dismiss();
     }
@@ -85,6 +80,17 @@ public abstract class BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         element.click();
     }
+
+    public void validateProductsContainAtLeastOne(By locator, String expectedTerm){
+        List<WebElement> products = driver.findElements(locator);
+            boolean found = products.stream()
+                    .anyMatch(p -> p.getText().toLowerCase().contains(expectedTerm.toLowerCase()));
+
+            if (!found) {
+                throw new AssertionError("Nenhum produto contém o termo: " + expectedTerm);
+            }
+    }
+
 
     //Tratamento de anúncios da página
     private void dealWithGoogleVignette() {
@@ -126,4 +132,24 @@ public abstract class BasePage {
             driver.switchTo().defaultContent();
         }
     }
+
+    public List<Cart> getCartItems() {
+        List<Cart> items = new ArrayList<>();
+        List<WebElement> rows = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("table.table-condensed tbody tr"))
+        );
+
+        for (WebElement row : rows) {
+            String imageSrc = row.findElement(By.cssSelector(".cart_product img")).getAttribute("src");
+            String description = row.findElement(By.cssSelector(".cart_description h4 a")).getText();
+            String price = row.findElement(By.cssSelector(".cart_price p")).getText();
+            String quantity = row.findElement(By.cssSelector(".cart_quantity button")).getText();
+            String total = row.findElement(By.cssSelector(".cart_total_price")).getText();
+
+            items.add(new Cart(imageSrc, description, price, quantity, total));
+        }
+
+        return items;
+    }
+
 }
