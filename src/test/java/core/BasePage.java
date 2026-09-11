@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import core.Cart;
 
 public abstract class BasePage {
 
@@ -41,15 +40,34 @@ public abstract class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
         dealWithGoogleVignette();
     }
+    public void click(WebElement element) {
+        try {
+            // Tenta o clique real padrão do Selenium
+            element.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            // CORREÇÃO: Usando o método público getDriver() para acessar a thread segura
+            System.out.println("[INFO] Clique interceptado por anuncio. Forçando execucao via JavaScript Executor.");
+            org.openqa.selenium.JavascriptExecutor js = (org.openqa.selenium.JavascriptExecutor) DriverFactory.getDriver();
+            js.executeScript("arguments[0].click();", element); // Corrigido também o índice do argumento do JS
+        }
+    }
+
 
     public void clickCss(String css_id) {
         click(By.cssSelector(css_id));
     }
 
+    public void submitForm(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.submit();
+    }
+
+
     public void clickLink (String link) {
         click(By.partialLinkText(link));
     }
     public void clickLinkCss (String link) {
+
         click(By.cssSelector(link));
     }
 
@@ -68,6 +86,7 @@ public abstract class BasePage {
     public void acceptAlert() {
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
+        driver.switchTo().defaultContent();
     }
 
     public void dismissAlert() {

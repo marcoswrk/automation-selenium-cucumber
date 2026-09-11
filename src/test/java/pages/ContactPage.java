@@ -2,7 +2,11 @@ package pages;
 
 import core.BasePage;
 import static utils.TestData.*;
+import static utils.TestData.generateLorem;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import java.io.File;
 
 
@@ -17,8 +21,12 @@ public class ContactPage extends BasePage {
         sendKeysCss("[data-qa='email']", generateRandomEmail());
     }
 
-    public void setMessage() {
+    public void setSubject() {
         sendKeysCss("[data-qa='subject']", generateLorem());
+    }
+
+    public void setMessage() {
+        sendKeys("message", generateLorem());
     }
 
     public void uploadFile(String filePath) {
@@ -26,13 +34,14 @@ public class ContactPage extends BasePage {
         driver.findElement(By.cssSelector("input[name='upload_file']")).sendKeys(absolutePath);
     }
 
-    public void clickChooseFile() {
+    public void selectFile() {
         uploadFile("src/test/resources/arquivo.txt");
     }
 
-    public void clickSubmit() {
-        clickCss("[data-qa='submit-button']");
+        public void submitForm() {
+        submitForm(By.cssSelector("input[type='submit']"));
     }
+
     @Override
     public void acceptAlert() {
         super.acceptAlert();

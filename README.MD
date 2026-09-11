@@ -1,15 +1,15 @@
 # Automacao Selenium com Cucumber
 
 Projeto de automacao de testes E2E com Selenium WebDriver, Cucumber, JUnit
-Platform e Maven. Os cenarios validam o cadastro, login, logout e mensagens de
+Platform e Maven. Os cenarios validam o cadastro, login, logout, páginas de contato, página de testes, testes de produtos e mensagens de
 erro do site [Automation Exercise](https://www.automationexercise.com/).
 
 ## Pre-requisitos
 
-- Java 26 ou uma versao compativel com o `pom.xml`;
+- Versao do java compativel com o `pom.xml`;
 - Maven 3.9 ou superior;
 - Google Chrome;
-- acesso a internet.
+- Acesso a internet.
 
 O WebDriverManager configura o ChromeDriver automaticamente.
 
@@ -51,17 +51,21 @@ mvn "-Dtest=runner.RunCucumberTest" "-Dcucumber.filter.name=Register User" test
 ## Estrutura
 
 ```text
-src/test/java/
-	core/       # DriverFactory e acoes comuns do BasePage
-	hooks/      # Inicializacao e encerramento do navegador
-	pages/      # Page Objects
-	runner/     # Runner JUnit Platform do Cucumber
-	steps/      # Step Definitions
-	utils/      # Dados de teste e credenciais
-src/test/resources/
-	registration.feature
-```
+src/
+├── test/
+│   ├── java/
+│   │   ├── core/       # DriverFactory e acoes comuns do BasePage
+│   │   ├── hooks/      # Inicializacao e encerramento do navegador
+│   │   ├── pages/      # Page Objects
+│   │   ├── runner/     # Runner JUnit Platform do Cucumber
+│   │   ├── steps/      # Step Definitions
+│   │   └── utils/       # Dados de teste e credenciais
+│   └── resources/
+│       ├── features
+│       └── junit-platform.properties
+├── main/java/org/example/automacao/Main.java
 
+```
 ## Observacoes
 
 - O cenario de cadastro usa dados gerados pelo DataFaker.

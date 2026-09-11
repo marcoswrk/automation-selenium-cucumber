@@ -22,7 +22,7 @@ public class LoginPage extends BasePage {
     }
 
     public String getLoggedUser() {
-    return getText(By.cssSelector("['fa fa-user']"));
+    return getText(By.cssSelector("li a:has(i.fa-user)"));
     }
 
     public void incorrectLogin () {

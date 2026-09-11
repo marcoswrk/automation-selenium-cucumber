@@ -7,6 +7,8 @@ import pages.LoginPage;
 import pages.SignUpPage;
 import utils.TestCredentials;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class RegistrationSteps {
 
@@ -57,7 +59,8 @@ public class RegistrationSteps {
     @Then("i get the login completed")
     public void i_get_the_login_completed() {
         String loggedUser = loginPage.getLoggedUser();
-        Assertions.assertEquals(" Logged in as ", loggedUser);
+        System.out.println("Texto capturado: " + loggedUser);
+        assertTrue(loggedUser.startsWith("Logged in as"));
     }
 
     @Given("i click on the login button to login")
