@@ -95,9 +95,18 @@ public abstract class BasePage {
     }
 
     public void clickWithScroll(By locator) {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-        element.click();
+        int tentativas = 0;
+        while (tentativas < 3) {
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            element.click();
+            dealWithGoogleVignette();
+
+            if (!driver.getCurrentUrl().contains("#google_vignette")) {
+                return; // clique deu certo, navegação seguiu normal
+            }
+            tentativas++;
+        }
     }
 
     public void validateProductsContainAtLeastOne(By locator, String expectedTerm){
