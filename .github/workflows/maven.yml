@@ -49,8 +49,8 @@ jobs:
           path: target/allure-results
 
       - name: Debug secrets (temporário)
-        run:
-          echo "TEST_EMAIL length: ${#TEST_EMAIL}"
+        run: |
+            echo "TEST_EMAIL length: ${#TEST_EMAIL}"
 
       # Optional: publicar via GitHub Pages
       # - name: Deploy Allure Report to GitHub Pages
