@@ -1,11 +1,17 @@
 package steps;
+import core.DriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import pages.LoginPage;
 import pages.SignUpPage;
 import utils.TestCredentials;
+
+import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,6 +65,9 @@ public class RegistrationSteps {
     @Then("i get the login completed")
     public void i_get_the_login_completed() {
         String loggedUser = loginPage.getLoggedUser();
+        TakesScreenshot ts = (TakesScreenshot) DriverFactory.getDriver();
+        byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+        Allure.addAttachment("Screenshot - após login", new ByteArrayInputStream(screenshot));
         assertTrue(loggedUser.contains("Logout"));
     }
 
