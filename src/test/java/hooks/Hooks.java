@@ -23,9 +23,14 @@ public class Hooks {
 
     @After
     public void tearDown(Scenario scenario) {
-        TakesScreenshot ts = (TakesScreenshot) DriverFactory.getDriver();
-        byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
-        Allure.addAttachment("Screenshot - " + scenario.getName(), new ByteArrayInputStream(screenshot));
-        DriverFactory.quitDriver();
+        try {
+            TakesScreenshot ts = (TakesScreenshot) DriverFactory.getDriver();
+            byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+            Allure.addAttachment("Screenshot - " + scenario.getName(), new ByteArrayInputStream(screenshot));
+        } catch (Exception e) {
+            System.out.println("Falha ao capturar screenshot: " + e.getMessage());
+        } finally {
+            DriverFactory.quitDriver();
+        }
     }
 }
