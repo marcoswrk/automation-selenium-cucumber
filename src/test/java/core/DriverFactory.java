@@ -2,6 +2,7 @@ package core;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public final class DriverFactory {
     // Para paralelismo
@@ -14,6 +15,13 @@ public final class DriverFactory {
         WebDriverManager.chromedriver().setup();
         DRIVER.set(new ChromeDriver());
         getDriver().manage().window().maximize();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        ChromeDriver driver = new ChromeDriver(options);
     }
 
     public static WebDriver getDriver() {
