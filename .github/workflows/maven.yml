@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:  TEST_EMAIL
 
     env:
       TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
