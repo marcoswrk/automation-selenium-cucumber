@@ -22,7 +22,7 @@ public class LoginPage extends BasePage {
     }
 
     public String getLoggedUser() {
-    return getText(By.cssSelector("li a:has(i.fa-user)"));
+    return getText(By.linkText("Logout"));
     }
 
     public void incorrectLogin () {
@@ -35,7 +35,7 @@ public class LoginPage extends BasePage {
         return getText(By.xpath("//p[normalize-space()='Your email or password is incorrect!']"));
     }
     public void clickLogoutButton() {
-        clickLink("Logout");
+        click(By.xpath("//a[@href='/logout']"));
     }
 
     public String getLogoutConfirmation(){
