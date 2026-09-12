@@ -48,6 +48,10 @@ jobs:
           name: allure-results
           path: target/allure-results
 
+      - name: Debug secrets (temporário)
+        run:
+          echo "TEST_EMAIL length: ${#TEST_EMAIL}"
+
       # Optional: publicar via GitHub Pages
       # - name: Deploy Allure Report to GitHub Pages
       #   uses: peaceiris/actions-gh-pages@v4
