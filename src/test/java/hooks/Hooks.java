@@ -23,11 +23,9 @@ public class Hooks {
 
     @After
     public void tearDown(Scenario scenario) {
-        if (scenario.isFailed()) {
-            TakesScreenshot ts = (TakesScreenshot) DriverFactory.getDriver();
-            byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
-            Allure.addAttachment("Screenshot - Scenario failed", new ByteArrayInputStream(screenshot));
-        }
+        TakesScreenshot ts = (TakesScreenshot) DriverFactory.getDriver();
+        byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+        Allure.addAttachment("Screenshot - " + scenario.getName(), new ByteArrayInputStream(screenshot));
         DriverFactory.quitDriver();
     }
 }

@@ -64,8 +64,8 @@ public class RegistrationSteps {
 
     @Then("i get the login completed")
     public void i_get_the_login_completed() {
-        //String loggedUser = loginPage.getLoggedUser();
-        //assertTrue(loggedUser.contains("Logout"));
+        String loggedUser = loginPage.getLoggedUser();
+        assertTrue(loggedUser.contains("Logout"));
     }
 
     @Given("i click on the login button to login")
