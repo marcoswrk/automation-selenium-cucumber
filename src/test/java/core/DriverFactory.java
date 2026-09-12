@@ -1,4 +1,5 @@
 package core;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,20 +9,22 @@ public final class DriverFactory {
     // Para paralelismo
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
-    private DriverFactory() {
-    }
+    private DriverFactory() {}
 
     public static void startDriver() {
         WebDriverManager.chromedriver().setup();
-        DRIVER.set(new ChromeDriver());
-        getDriver().manage().window().maximize();
 
         ChromeOptions options = new ChromeOptions();
+        // Flags necessárias para rodar em CI/CD (GitHub Actions, Docker, etc.)
         options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+
         ChromeDriver driver = new ChromeDriver(options);
+        DRIVER.set(driver);
+        driver.manage().window().maximize();
     }
 
     public static WebDriver getDriver() {
