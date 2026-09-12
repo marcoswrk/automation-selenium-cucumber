@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env: # define variáveis globais para o job
+      TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
     steps:
     - uses: actions/checkout@v4
 
@@ -24,9 +28,6 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Run tests
-      env:
-        TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
       run: mvn test
 
     - name: Install Allure CLI
