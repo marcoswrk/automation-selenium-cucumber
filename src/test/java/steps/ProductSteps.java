@@ -7,6 +7,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.ProductPage;
 import utils.TestData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ public class ProductSteps extends BasePage {
 
     @Then("i get successfully redirected to the product details page")
     public void i_get_successfully_redirected_to_the_product_details_page() {
+        wait.until(ExpectedConditions.urlContains("/product_details/1"));
         assertTrue(DriverFactory.getDriver().getCurrentUrl().contains("/product_details/1"));
     }
 
