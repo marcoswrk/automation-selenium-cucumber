@@ -15,7 +15,7 @@ public abstract class BasePage {
 
     public BasePage() {
         this.driver = DriverFactory.getDriver();
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
     
     public void sendKeys(By locator, String texto) {

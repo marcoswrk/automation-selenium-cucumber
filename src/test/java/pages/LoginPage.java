@@ -22,7 +22,7 @@ public class LoginPage extends BasePage {
     }
 
     public String getLoggedUser() {
-    return getText(By.linkText("Logout"));
+    return getText(By.cssSelector("a[href='/logout']"));
     }
 
     public void incorrectLogin () {
