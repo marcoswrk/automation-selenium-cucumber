@@ -54,4 +54,20 @@ public class TestData {
 
     public static String generateLorem() {return faker.lorem().word();}
 
-}
+    public static String generateCardNumber() {
+        return faker.finance().creditCard();
+    }
+    public static String generateCVC() {
+        return faker.number().digits(3);
+    }
+
+    public static String  generateExpirationMonth() {
+        return String.valueOf(faker.number().numberBetween(1, 12));
+    }
+
+    public static String  generateExpirationYear() {
+        return String.valueOf(faker.number().numberBetween(2026, 2030));
+    }
+
+
+    }

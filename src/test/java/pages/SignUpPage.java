@@ -79,7 +79,22 @@ public class SignUpPage extends BasePage {
         sendKeys("zipcode", TestData.generateZipCode());
         sendKeys("mobile_number", TestData.generateMobileNumber());
     }
-    
+    public void Register() {
+        setName();
+        setEmail();
+        clickSignupButton();
+        selectTitle();
+        setPassword();
+        selectDateOfBirth();
+        selectNewsletter();
+        selectOffers();
+        setAddress();
+        //Imprimir para referência de Login
+        System.out.println("Email gerado: " + getGeneratedEmail());
+        System.out.println("Password gerado: " + getGeneratedPassword());
+        clickCreateAccountButton();
+    }
+
     public void clickCreateAccountButton() {
         clickCss("[data-qa='create-account']");
     }
