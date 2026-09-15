@@ -65,7 +65,7 @@ public class ProductSteps extends BasePage {
     @When("i put my email and click over the arrow")
     public void i_put_my_email_and_click_over_the_arrow() {
         generateEmail = TestData.generateRandomEmail();
-        sendKeys("susbscribe_email", generateEmail);
+        sendKeys("subscribe_email", generateEmail);
         clickWithScroll(By.id("subscribe"));
     }
 
