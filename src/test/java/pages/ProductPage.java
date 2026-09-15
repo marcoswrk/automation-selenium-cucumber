@@ -1,5 +1,6 @@
 package pages;
-import pages.LoginPage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import core.BasePage;
 import core.Cart;
 import org.openqa.selenium.By;
@@ -16,7 +17,7 @@ public class ProductPage extends BasePage {
     }
 
     public String deletedAccountText() {
-    return getText(By.cssSelector("h2.title.text-center"));
+        return getText(By.cssSelector("h2[class='title text-center']"));
     }
 
     public String successMessage() {
@@ -27,12 +28,21 @@ public class ProductPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("cartModal")));
     }
 
+    public void scrollToSubscription() {
+        WebElement subscription = driver.findElement(By.xpath("//h2[text()='Subscription']"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(subscription).perform();
+    }
     public void interactCheckOutModal() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("checkoutModal")));
     }
 
     public void setMessage() {
         sendKeys(By.cssSelector("textarea[name='message']"), generateLorem());
+    }
+
+    public String emptyCartMessage() {
+        return getText(By.cssSelector("#empty_cart p b"));
     }
 
     public String congratsMessage() {
@@ -52,7 +62,7 @@ public class ProductPage extends BasePage {
 
     public void setPayment (){
         sendKeys(By.cssSelector("input[data-qa='name-on-card']"), generateRandomName());
-        sendKeys(By.cssSelector("input[data-qa='card-number']"), generateCardNumber());;
+        sendKeys(By.cssSelector("input[data-qa='card-number']"), generateCardNumber());
         sendKeys(By.cssSelector("input[data-qa='cvc']"), generateCVC());
         sendKeys(By.cssSelector("input[data-qa='expiry-month']"), generateExpirationMonth());
         sendKeys(By.cssSelector("input[data-qa='expiry-year']"), generateExpirationYear());

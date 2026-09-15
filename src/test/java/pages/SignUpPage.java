@@ -1,20 +1,14 @@
 package pages;
-import static core.DriverFactory.getDriver;
 import core.BasePage;
 import utils.TestData;
 import org.openqa.selenium.By;
 
 public class SignUpPage extends BasePage {
-    private String generatedName;
     private String generatedEmail;
     private String generatedPassword;
 
-    public void accessHomePage () {
-        getDriver().get("https://automationexercise.com/");
-    }
-
     public void setName() {
-        generatedName = TestData.generateRandomName();
+        String generatedName = TestData.generateRandomName();
         sendKeysCss("[name='name']", generatedName);
     }
 
@@ -29,10 +23,6 @@ public class SignUpPage extends BasePage {
     }
     public void clickSignupButton() {
         clickCss("[data-qa='signup-button']");
-    }
-
-    public String getGeneratedName() {
-        return generatedName;
     }
 
     public String getGeneratedEmail() {
@@ -80,6 +70,7 @@ public class SignUpPage extends BasePage {
         sendKeys("mobile_number", TestData.generateMobileNumber());
     }
     public void Register() {
+        clickLink("Signup / Login");
         setName();
         setEmail();
         clickSignupButton();

@@ -87,8 +87,8 @@ Feature: Scenario for the product page
 
   Scenario: Download Invoice after purchase order
     Given i add products to cart and register on the website
-    When i get successfully proceed to confirm my order
-    Then i get successfully download invoice and delete my account
+    When i get successfully proceeded to confirm my order
+    Then i get to successfully download the invoice and delete my account
 
   Scenario: Verify Scroll Up using 'Arrow' button
     Given i navigate to the bottom page
