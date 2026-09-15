@@ -65,7 +65,7 @@ public class ProductSteps extends BasePage {
     @When("i put my email and click over the arrow")
     public void i_put_my_email_and_click_over_the_arrow() {
         generateEmail = TestData.generateRandomEmail();
-        sendKeys("subscribe_email", generateEmail);
+        sendKeys("susbscribe_email", generateEmail);
         clickWithScroll(By.id("subscribe"));
     }
 
@@ -100,7 +100,7 @@ public class ProductSteps extends BasePage {
         clickWithScroll(By.cssSelector("[data-product-id='1']"));
     }
 
-    @Given("i click on the continue shopping button")
+    @And("i click on the continue shopping button")
     public void i_click_on_the_continue_shopping_button() {
         productPage.interactCartModal();
         driver.findElement(By.cssSelector(".btn-success")).click();
@@ -142,6 +142,7 @@ public class ProductSteps extends BasePage {
     public void i_register_myself_on_the_website() {
         signUpPage = new SignUpPage();
         productPage.interactCheckOutModal();
+        clickLink("Register / Login");
         signUpPage.Register();
         String message = signUpPage.getAccountCreatedMessage();
         Assertions.assertEquals("ACCOUNT CREATED!", message);
@@ -215,6 +216,8 @@ public class ProductSteps extends BasePage {
     @Given("i do login")
     public void i_do_login() {
         loginPage = new LoginPage();
+        productPage = new ProductPage();
+        clickLink("Signup / Login");
         loginPage.login(TestCredentials.EMAIL, TestCredentials.PASSWORD);
 
     }
@@ -236,16 +239,12 @@ public class ProductSteps extends BasePage {
         click(By.id("submit"));
     }
 
-    @Then("i get a confirmation message and delete account")
-    public void i_get_a_confirmation_message_and_delete_account() {
+    @Then("i get a confirmation message")
+    public void i_get_a_confirmation_message() {
         productPage.searchedProductsTitle();
         assertEquals("ORDER PLACED!", productPage.searchedProductsTitle());
         productPage.congratsMessage();
         assertEquals("Congratulations! Your order has been confirmed!", productPage.congratsMessage());
-        clickLink("Delete Account");
-        productPage.deletedAccountText();
-        assertEquals("ACCOUNT DELETED!",  productPage.deletedAccountText());
-        clickLink("Continue");
     }
 
     @Given("i navigate to the products page")

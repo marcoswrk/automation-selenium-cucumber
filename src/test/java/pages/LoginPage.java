@@ -35,7 +35,7 @@ public class LoginPage extends BasePage {
         return getText(By.xpath("//p[normalize-space()='Your email or password is incorrect!']"));
     }
     public void clickLogoutButton() {
-        click(By.xpath("//a[@href='/logout']"));
+        clickLink("Logout");
     }
 
     public String getLogoutConfirmation(){

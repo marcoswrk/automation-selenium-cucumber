@@ -42,11 +42,11 @@ Feature: Scenario for the product page
     When i proceed to finish my order
     Then i get the order finished and delete my account
 
-  Scenario: Login before checkout place order and delete account
+  Scenario: Login before checkout place order
     Given i do login
     And add products to cart and check out
     When i comment on text area and confirm order
-    Then i get a confirmation message and delete account
+    Then i get a confirmation message
 
   Scenario: Remove products from cart
     Given i navigate to the products page

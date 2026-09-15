@@ -29,20 +29,7 @@ public class RegistrationSteps {
 
     @When("i register my credentials")
     public void i_register_my_credentials() {
-        signUpPage.setName();
-        signUpPage.setEmail();
-        signUpPage.clickSignupButton();
-        signUpPage.selectTitle();
-        signUpPage.setPassword();
-        signUpPage.selectDateOfBirth();
-        signUpPage.selectNewsletter();
-        signUpPage.selectOffers();
-        signUpPage.setAddress();
-        //Imprimir para referência de Login
-        System.out.println("Email gerado: " + signUpPage.getGeneratedEmail());
-        System.out.println("Password gerado: " + signUpPage.getGeneratedPassword());
-        signUpPage.clickCreateAccountButton();
-        
+    signUpPage.Register();
     }
 
     @Then("i get the signup completed")
