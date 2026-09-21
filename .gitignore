@@ -47,3 +47,4 @@ drivers/
 *.iml
 .env
 *.local.properties
+.allure-results
