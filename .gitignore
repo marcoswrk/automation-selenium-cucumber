@@ -43,8 +43,10 @@ build/
 *.exe
 drivers/
 
+target/
 .idea/
 *.iml
 .env
 *.local.properties
 .allure-results
+allure-report/
