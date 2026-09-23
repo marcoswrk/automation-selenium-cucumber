@@ -90,7 +90,7 @@ Feature: Scenario for the product page
     When i get successfully proceeded to confirm my order
     Then i get to successfully download the invoice and delete my account
 
-  Scenario: Verify Scroll Up using 'Arrow' button
+  Scenario: Verify Scroll Up using 'Arrow' bottom
     Given i navigate to the bottom page
-    When i click o the arrow button at the botton right of the page
+    When i click o the arrow button at the bottom right of the page
     Then i verify that page is scrolled up

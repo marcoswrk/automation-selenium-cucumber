@@ -2,71 +2,67 @@ package steps;
 
 import core.BasePage;
 import core.Cart;
-import core.DriverFactory;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.LoginPage;
 import pages.ProductPage;
 import utils.TestCredentials;
-import utils.TestData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static utils.TestData.*;
 
 
 import pages.SignUpPage;
 
 public class ProductSteps extends BasePage {
 
-    private String generateEmail;
+    private String email;
     private ProductPage productPage;
     private SignUpPage signUpPage;
     private LoginPage loginPage;
 
     @Given("i accessed the Products page")
     public void i_accessed_the_products_page() {
-    clickLink("Products");
+        productPage = new ProductPage();
+        clickLink("Products");
     }
 
     @When("i click on the first item view product button")
     public void i_click_on_the_first_item_view_product_button() {
-    clickWithScroll(By.cssSelector("a[href='/product_details/1']"));
+        productPage.clickViewProductById("1");
     }
 
     @Then("i get successfully redirected to the product details page")
     public void i_get_successfully_redirected_to_the_product_details_page() {
-        wait.until(ExpectedConditions.urlContains("/product_details/1"));
-        assertTrue(DriverFactory.getDriver().getCurrentUrl().contains("/product_details/1"));
+        assertTrue(productPage.isOnProductDetailsPage("1"));
     }
 
     @Given("i accessed the Products page for search")
     public void i_accessed_the_products_page_for_search() {
+        productPage = new ProductPage();
         clickLink("Products");
     }
 
     @When("i put a product name and and click search button")
     public void i_put_a_product_name_and_and_click_search_button() {
-        sendKeys("search_product", "Top");
-        clickCss(".fa.fa-search");
+        productPage.setProduct("Top");
+        productPage.clickSearchButton();
     }
 
     @Then("i get all the products related search visible")
     public void i_get_all_the_products_related_search_visible() {
         productPage = new ProductPage();
-        assertEquals("SEARCHED PRODUCTS", productPage.searchedProductsTitle());
-        validateProductsContainAtLeastOne(By.cssSelector(".productinfo p"), ("Top"));
+        assertEquals("SEARCHED PRODUCTS", productPage.getOrderText());
+        assertTrue(productPage.hasProductContaining("Top"));
     }
 
     @When("i put my email and click over the arrow")
     public void i_put_my_email_and_click_over_the_arrow() {
-        generateEmail = TestData.generateRandomEmail();
-        sendKeys("susbscribe_email", generateEmail);
-        clickWithScroll(By.id("subscribe"));
+        productPage = new ProductPage();
+        productPage.subscribeNewsletter(email);
     }
 
     @Then("i receive a message for successfully subscribing")
@@ -77,14 +73,13 @@ public class ProductSteps extends BasePage {
 
     @Given("i accessed the cart page")
     public void i_accessed_the_cart_page() {
-    clickLink("Cart");
+        productPage = new ProductPage();
+        clickLink("Cart");
     }
 
     @When("i put my email and click over the arrow at cart page")
     public void i_put_my_email_and_click_over_the_arrow_at_cart_page() {
-        generateEmail = TestData.generateRandomEmail();
-        sendKeys("susbscribe_email", generateEmail);
-        clickWithScroll(By.id("subscribe"));
+        productPage.subscribeNewsletter(email);
     }
 
     @Then("i receive a message for successfully subscribing via cart page")
@@ -97,24 +92,24 @@ public class ProductSteps extends BasePage {
     public void i_have_already_added_the_first_product_to_my_cart() {
         productPage = new ProductPage();
         clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='1']"));
+        productPage.clickProductById("1");
     }
 
     @And("i click on the continue shopping button")
     public void i_click_on_the_continue_shopping_button() {
         productPage.interactCartModal();
-        driver.findElement(By.cssSelector(".btn-success")).click();
+        productPage.clickModalButton();
     }
 
     @And("i add a second product to my cart")
     public void i_add_a_second_product_to_my_cart() {
-        clickWithScroll(By.cssSelector("[data-product-id='2']"));
+       productPage.clickProductById("2");
     }
 
     @When("i proceed to the checkout cart")
     public void i_proceed_to_the_checkout_cart() {
         productPage.interactCartModal();
-        driver.findElement(By.linkText("View Cart")).click();
+        clickLink("View Cart");
     }
 
     @Then("i should see both products and prices in my shopping cart")
@@ -132,10 +127,10 @@ public class ProductSteps extends BasePage {
     public void i_have_added_a_product_to_my_cart() {
         productPage = new ProductPage();
         clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='1']"));
+        productPage.addProductToCartById("1");
         productPage.interactCartModal();
-        driver.findElement(By.linkText("View Cart")).click();
-        click(By.cssSelector("a.check_out"));
+        clickLink("View Cart");
+        productPage.clickCheckout();
     }
 
     @And("i register myself on the website")
@@ -144,25 +139,25 @@ public class ProductSteps extends BasePage {
         productPage.interactCheckOutModal();
         clickLink("Register / Login");
         signUpPage.Register();
-        String message = signUpPage.getAccountCreatedMessage();
-        Assertions.assertEquals("ACCOUNT CREATED!", message);
+        signUpPage.getAccountCreatedMessage();
+        Assertions.assertEquals("ACCOUNT CREATED!", signUpPage.getAccountCreatedMessage());
     }
 
     @When("i do the checkout and place my order")
     public void i_do_the_checkout_and_place_my_order() {
         clickLink("Cart");
-        click(By.cssSelector("a.check_out"));
+        productPage.clickCheckout();
         productPage.setMessage();
-        click(By.linkText("Place Order"));
+        clickLink("Place Order");
         productPage.setPayment();
-        click(By.id("submit"));
+        clickById("submit");
 
     }
 
     @And("i get a confirmation message for the order")
     public void i_get_a_confirmation_message_for_the_order() {
-        productPage.searchedProductsTitle();
-        assertEquals("ORDER PLACED!", productPage.searchedProductsTitle());
+        productPage.getOrderText();
+        assertEquals("ORDER PLACED!", productPage.getOrderText());
         productPage.congratsMessage();
         assertEquals("Congratulations! Your order has been confirmed!", productPage.congratsMessage());
     }
@@ -170,8 +165,8 @@ public class ProductSteps extends BasePage {
     @Then("i delete my account")
     public void i_delete_my_account() {
         clickLink("Delete Account");
-        productPage.deletedAccountText();
-        assertEquals("ACCOUNT DELETED!",  productPage.deletedAccountText());
+        productPage.getCenterText();
+        assertEquals("ACCOUNT DELETED!",  productPage.getCenterText());
         clickLink("Continue");
     }
 
@@ -187,10 +182,10 @@ public class ProductSteps extends BasePage {
     @And("add products to my cart")
     public void add_products_to_my_cart() {
         clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='1']"));
+        productPage.clickProductById("1");
         productPage.interactCartModal();
-        driver.findElement(By.linkText("View Cart")).click();
-        click(By.cssSelector("a.check_out"));
+        clickLink("View Cart");
+        productPage.clickCheckout();
     }
 
     @When("i proceed to finish my order")
@@ -203,13 +198,13 @@ public class ProductSteps extends BasePage {
 
     @Then("i get the order finished and delete my account")
     public void i_get_the_order_finished_and_delete_my_account() {
-        productPage.searchedProductsTitle();
-        assertEquals("ORDER PLACED!", productPage.searchedProductsTitle());
+        productPage.getOrderText();
+        assertEquals("ORDER PLACED!", productPage.getOrderText());
         productPage.congratsMessage();
         assertEquals("Congratulations! Your order has been confirmed!", productPage.congratsMessage());
         clickLink("Delete Account");
-        productPage.deletedAccountText();
-        assertEquals("ACCOUNT DELETED!",  productPage.deletedAccountText());
+        productPage.getCenterText();
+        assertEquals("ACCOUNT DELETED!",  productPage.getCenterText());
         clickLink("Continue");
     }
 
@@ -225,9 +220,9 @@ public class ProductSteps extends BasePage {
     @And("add products to cart and check out")
     public void add_products_to_cart_and_check_out() {
         clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='1']"));
+        productPage.clickProductById("1");
         productPage.interactCartModal();
-        driver.findElement(By.linkText("View Cart")).click();
+        clickLink("View Cart");
         click(By.cssSelector("a.check_out"));
     }
 
@@ -241,8 +236,8 @@ public class ProductSteps extends BasePage {
 
     @Then("i get a confirmation message")
     public void i_get_a_confirmation_message() {
-        productPage.searchedProductsTitle();
-        assertEquals("ORDER PLACED!", productPage.searchedProductsTitle());
+        productPage.getOrderText();
+        assertEquals("ORDER PLACED!", productPage.getOrderText());
         productPage.congratsMessage();
         assertEquals("Congratulations! Your order has been confirmed!", productPage.congratsMessage());
     }
@@ -255,9 +250,9 @@ public class ProductSteps extends BasePage {
 
     @When("i add a product and see it displayed")
     public void i_add_a_product_and_see_it_displayed() {
-        clickWithScroll(By.cssSelector("[data-product-id='1']"));
+        productPage.clickProductById("1");
         productPage.interactCartModal();
-        driver.findElement(By.linkText("View Cart")).click();
+        clickLink("View Cart");
 
     }
 
@@ -276,44 +271,44 @@ public class ProductSteps extends BasePage {
 
     @When("i click on the Women category: Dress")
     public void i_click_on_the_women_category_dress() {
-        clickLinkCss("a[href='#Women']");
-        clickLinkCss("a[href='/category_products/1']");
+        productPage.clickDressCategory();
     }
 
     @Then("i verify that the page displayed contains the expected text")
     public void i_verify_that_the_page_displayed_contains_the_expected_text() {
-        assertEquals("WOMEN -  Dress PRODUCTS", getText(By.cssSelector("h2[class='title text-center']")));
+        assertEquals("WOMEN -  Dress PRODUCTS", productPage.getCenterText());
     }
 
     @Given("i verified the brand visible on the left side of products page")
     public void i_verified_the_brand_visible_on_the_left_side_of_products_page() {
+        productPage =  new ProductPage();
         clickLink("Products");
     }
 
     @When("i click on a brand name")
     public void i_click_on_a_brand_name() {
-        clickLinkCss("a[href='/brand_products/Polo']");
+        productPage.clickBrandProductName("Polo");
     }
 
     @Then("i verify that the page displayed contains the expected brand products")
     public void i_verify_that_the_page_displayed_contains_the_expected_brand_products() {
-        assertEquals("BRAND -  Polo PRODUCTS", getText(By.cssSelector("h2[class='title text-center']")));
+        assertEquals("BRAND -  Polo PRODUCTS", productPage.getCenterText());
     }
 
     @Given("i searched for products")
     public void i_searched_for_products() {
         productPage = new ProductPage();
         clickLink("Products");
-        sendKeys("search_product", "Tshirts");
-        clickCss(".fa.fa-search");
+        productPage.setProduct("Tshirts");
+        productPage.clickSearchButton();
     }
 
     @And("i added this products to my cart")
     public void i_added_this_products_to_my_cart() {
-        clickWithScroll(By.cssSelector("[data-product-id='28']"));
+        productPage.clickProductById("28");
         productPage.interactCartModal();
         clickLink("View Cart");
-        assertEquals("Pure Cotton V-Neck T-Shirt",  getText(By.cssSelector("a[href='/product_details/28']")));
+        assertEquals("Pure Cotton V-Neck T-Shirt",  productPage.getShirtText());
     }
 
     @When("logged in the website")
@@ -326,30 +321,29 @@ public class ProductSteps extends BasePage {
     @Then("i go to the cart page and the products are still added")
     public void i_go_to_the_cart_page_and_the_products_are_still_added() {
         clickLink("Cart");
-        assertEquals("Pure Cotton V-Neck T-Shirt",  getText(By.cssSelector("a[href='/product_details/28']")));
+        assertEquals("Pure Cotton V-Neck T-Shirt",  productPage.getShirtText());
     }
 
     @Given("i click on the products button")
     public void i_click_on_the_products_button() {
-    clickLink("Products");
+        productPage = new ProductPage();
+        clickLink("Products");
     }
 
     @And("i click on view product button")
     public void i_click_on_view_product_button() {
-    clickWithScroll(By.cssSelector("a[href='/product_details/3']"));
+        productPage.clickViewProductById("3");
     }
 
     @When("submit a review for the product")
     public void submit_a_review_for_the_product() {
-    sendKeys("name", generateFirstName());
-    sendKeys("email", generateRandomEmail());
-    sendKeys("review", generateLorem());
-    clickWithScroll(By.id("button-review"));
-    }
+        productPage.setReview();
+        clickWithScroll(By.id("button-review"));
+        }
 
     @Then("i get a success message for the review")
     public void i_get_a_success_message_for_the_review() {
-    assertEquals("Thank you for your review.", getText(By.cssSelector("#review-section .alert-success span")));
+    assertEquals("Thank you for your review.", productPage.getReviewText());
     }
 
     @Given("i scroll to the bottom of the home page")
@@ -359,14 +353,14 @@ public class ProductSteps extends BasePage {
 
     @When("i add a recommended product")
     public void i_add_a_recommended_product() {
-        clickWithScroll(By.cssSelector("[data-product-id='4']"));
+        productPage.addProductToCartById("4");
         productPage.interactCartModal();
         clickLink("View Cart");
     }
 
     @Then("i get the product displayed in the cart page")
     public void i_get_the_product_displayed_in_the_cart_page() {
-        assertEquals("Stylish Dress",  getText(By.cssSelector("a[href='/product_details/4']")));
+        assertEquals("Stylish Dress",  productPage.getDressText());
 
     }
 
@@ -375,23 +369,20 @@ public class ProductSteps extends BasePage {
         signUpPage = new SignUpPage();
         signUpPage.Register();
         productPage = new ProductPage();
-        clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='3']"));
-        productPage.interactCartModal();
-        clickLink("View Cart");
+        productPage.addProductCart();
     }
 
     @When("i proceed to the checkout page")
     public void i_proceed_to_the_checkout_page() {
-        click(By.cssSelector("a.check_out"));
+        productPage.clickCheckout();
     }
 
     @Then("i confirm address and billing address are correct and delete my account")
     public void i_confirm_address_and_billing_address_are_correct_and_delete_my_account() {
-        assertEquals("Address Details", getText(By.cssSelector("div.step-one > h2.heading")));
+        assertEquals("Address Details", productPage.getAddressText());
         clickLink("Delete Account");
-        productPage.deletedAccountText();
-        assertEquals("ACCOUNT DELETED!",  productPage.deletedAccountText());
+        productPage.getCenterText();
+        assertEquals("ACCOUNT DELETED!",  productPage.getCenterText());
         clickLink("Continue");
     }
 
@@ -399,32 +390,28 @@ public class ProductSteps extends BasePage {
     public void i_add_products_to_cart_and_register_on_the_website() {
         signUpPage = new SignUpPage();
         productPage = new ProductPage();
-        clickLink("Products");
-        clickWithScroll(By.cssSelector("[data-product-id='3']"));
-        productPage.interactCartModal();
-        clickLink("View Cart");
-        click(By.cssSelector("a.check_out"));
-        productPage.interactCheckOutModal();
+        productPage.addProductCart();
+        productPage.clickCheckoutWithModal();
         clickLink("Register / Login");
         signUpPage.Register();
     }
 
     @When("i get successfully proceeded to confirm my order")
     public void i_get_successfully_proceeded_to_confirm_my_order() {
-        String message = signUpPage.getAccountCreatedMessage();
-        Assertions.assertEquals("ACCOUNT CREATED!", message);
+        signUpPage.getAccountCreatedMessage();
+        Assertions.assertEquals("ACCOUNT CREATED!", signUpPage.getAccountCreatedMessage());
         clickLink("Cart");
-        click(By.cssSelector("a.check_out"));
+        productPage.clickCheckout();
         productPage.setMessage();
         click(By.linkText("Place Order"));
         productPage.setPayment();
-        click(By.id("submit"));
+        clickById("submit");
     }
 
     @Then("i get to successfully download the invoice and delete my account")
     public void i_get_to_successfully_download_the_invoice_and_delete_my_account() {
-        productPage.searchedProductsTitle();
-        assertEquals("ORDER PLACED!", productPage.searchedProductsTitle());
+        productPage.getOrderText();
+        assertEquals("ORDER PLACED!", productPage.getOrderText());
         productPage.congratsMessage();
         assertEquals("Congratulations! Your order has been confirmed!", productPage.congratsMessage());
         clickLink("Download Invoice");
@@ -436,9 +423,9 @@ public class ProductSteps extends BasePage {
         productPage.scrollToSubscription();
     }
 
-    @When("i click o the arrow button at the botton right of the page")
-    public void i_click_o_the_arrow_button_at_the_botton_right_of_the_page() {
-        click(By.cssSelector("a[href='#top']"));
+    @When("i click o the arrow button at the bottom right of the page")
+    public void i_click_o_the_arrow_button_at_the_bottom_right_of_the_page() {
+        productPage.clickScrollToTop();
     }
 
     @Then("i verify that page is scrolled up")

@@ -11,8 +11,6 @@ erro do site [Automation Exercise](https://www.automationexercise.com/).
 - Google Chrome;
 - Acesso a internet.
 
-O WebDriverManager configura o ChromeDriver automaticamente.
-
 ## Credenciais de teste
 
 O teste de login usa uma conta previamente cadastrada no Automation Exercise.

@@ -29,6 +29,7 @@ public class ContactPage extends BasePage {
         sendKeys("message", generateLorem());
     }
 
+
     public void uploadFile(String filePath) {
         String absolutePath = new File(filePath).getAbsolutePath();
         driver.findElement(By.cssSelector("input[name='upload_file']")).sendKeys(absolutePath);

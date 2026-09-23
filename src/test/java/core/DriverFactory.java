@@ -1,21 +1,17 @@
 package core;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 public final class DriverFactory {
-    // Para paralelismo
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
     private DriverFactory() {}
 
     public static void startDriver() {
-        WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        // Flags necessárias para rodar em CI/CD (GitHub Actions, Docker, etc.)
         options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");

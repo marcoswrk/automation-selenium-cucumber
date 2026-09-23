@@ -109,15 +109,7 @@ public abstract class BasePage {
         }
     }
 
-    public void validateProductsContainAtLeastOne(By locator, String expectedTerm){
-        List<WebElement> products = driver.findElements(locator);
-            boolean found = products.stream()
-                    .anyMatch(p -> p.getText().toLowerCase().contains(expectedTerm.toLowerCase()));
 
-            if (!found) {
-                throw new AssertionError("Nenhum produto contém o termo: " + expectedTerm);
-            }
-    }
 
 
     //Tratamento de anúncios da página
