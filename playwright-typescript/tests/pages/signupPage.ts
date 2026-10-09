@@ -1,5 +1,8 @@
 import type { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage.js';
+import dotenv from 'dotenv';
+import { getUsedEmail } from '../utils/credentials.js';
+dotenv.config();
 
 export interface SignupUser {
   name: string;
@@ -34,6 +37,7 @@ export class SignupPage extends BasePage {
     private readonly mobileNumberInput: Locator;
     private readonly createAccountButton: Locator;
     private readonly accountCreatedText: Locator;
+    private readonly emailAlreadyExistsText: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -54,6 +58,7 @@ export class SignupPage extends BasePage {
         this.mobileNumberInput = page.locator('[data-qa="mobile_number"]');
         this.createAccountButton = page.getByRole('button', { name: 'Create Account' });
         this.accountCreatedText = page.getByText('Account Created!');
+        this.emailAlreadyExistsText = page.getByText('Email Address already exist!');
     }
 
 
@@ -84,12 +89,26 @@ export class SignupPage extends BasePage {
         await this.baseFill(this.zipcodeInput, user.zipCode);
         await this.baseFill(this.mobileNumberInput, user.mobileNumber);
         await this.baseClick(this.createAccountButton);
-        
+        console.log('email: ' + user.email);
+        console.log('password: ' + user.password);
+    }
+
+    async signupWithUsedEmail (user: SignupUser) {
+        await this.page.goto('/login');
+        await this.baseFill(this.nameInput, user.firstName);
+        await this.baseFill(this.emailInput, getUsedEmail());
+        await this.baseClick(this.signupButton);
     }
 
     async expectAccountCreated () {
         await this.baseExpectVisible(this.accountCreatedText);
     }
+    
+    async expectEmailAlreadyExists() {
+        await this.baseExpectVisible(this.emailAlreadyExistsText);
+    }
+
+     
 
 
 
