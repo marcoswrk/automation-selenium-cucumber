@@ -1,26 +1,29 @@
+# Java / Kotlin build output
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+out/
+*.class
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
 
 ### Eclipse ###
-.apt_generated
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 
 ### NetBeans ###
 /nbproject/private/
@@ -28,25 +31,27 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
-.DS_Store
+### Node.js / Playwright ###
+node_modules/
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+playwright/.auth/
 
-.idea/ .iml target/ build/ out/ .class .DS_Store
-
-*.exe
-drivers/
-
-target/
-.idea/
-*.iml
+### Local environment files ###
 .env
+.env.*
+!.env.example
 *.local.properties
-.allure-results
+
+### Test reports ###
+.allure-results/
 allure-report/
+
+### OS generated files ###
+.DS_Store
