@@ -1,7 +1,25 @@
-import { test, expect } from '@playwright/test';
-import { SignupPage, type SignupUser } from './pages/signupPage.js';
-import { generateUser } from './utils/faker.data.js';
+import { test as base } from '@playwright/test';
+import { LoginPage } from './pages/loginPage.js';
 
-// test.describe('User Login Tests', () => {
-//     let signupPage: SignupPage;
-//     let user: SignupUser;
+const test = base.extend<{
+   loginPage: LoginPage;
+}>({
+  loginPage: async ({ page }, use) => {
+  await use(new LoginPage(page));
+  },
+});
+
+test('Login User with correct data', async ({ loginPage }) => {
+  await loginPage.startLogin();
+  await loginPage.expectLoginSuccess();
+});
+
+test('Login user with wrong data', async ({  loginPage }) => {
+  await loginPage.wrongLogin();
+  await loginPage.expectLoginFailure();
+});
+
+test('Logout user', async ({ loginPage }) => {
+  await loginPage.startLogout();
+  await loginPage.expectLogoutSuccess();
+});
