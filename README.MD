@@ -1,70 +1,69 @@
-# Automacao Selenium com Cucumber
+# Cross-Stack E2E Test Automation
 
-Projeto de automacao de testes E2E com Selenium WebDriver, Cucumber, JUnit
-Platform e Maven. Os cenarios validam o cadastro, login, logout, páginas de contato, página de testes, testes de produtos e mensagens de
-erro do site [Automation Exercise](https://www.automationexercise.com/).
+Projeto de automação de testes end-to-end para o site [Automation Exercise](https://www.automationexercise.com/), com implementações em Java/Selenium e TypeScript/Playwright em branches separadas.
 
-## Pre-requisitos
+## Implementações
 
-- Versao do java compativel com o `pom.xml`;
-- Maven 3.9 ou superior;
-- Google Chrome;
-- Acesso a internet.
+| Branch | Tecnologias | Objetivo |
+| --- | --- | --- |
+| [`main`](https://github.com/marcoswrk/cross-stack-e2e-automation/tree/main) | Java, Selenium WebDriver, Cucumber, JUnit Platform e Maven | Executar cenários BDD de interface com Selenium. |
+| [`feat/playwright-typescript`](https://github.com/marcoswrk/cross-stack-e2e-automation/tree/feat/playwright-typescript) | TypeScript, Playwright Test e Faker | Executar testes E2E com Playwright, fixtures e Page Objects. |
 
-## Credenciais de teste
+Cada branch contém a estrutura e as dependências da respectiva implementação.
 
-O teste de login usa uma conta previamente cadastrada no Automation Exercise.
-As credenciais nao ficam no repositorio: sao lidas das variaveis de ambiente
-`TEST_EMAIL` e `TEST_PASSWORD`.
+### Pré-requisitos
 
-No PowerShell, configure-as para a sessao atual:
+- Node.js LTS e npm;
+- Acesso à internet;
+- Uma conta de teste já cadastrada no Automation Exercise para os cenários de login.
 
-```powershell
-$env:TEST_EMAIL = "seu-email-de-teste@example.com"
-$env:TEST_PASSWORD = "sua-senha-de-teste"
-```
+### Instalação e execução
 
-Para tornar a configuracao persistente para novos terminais:
+Na raiz do repositório:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("TEST_EMAIL", "seu-email-de-teste@example.com", "User")
-[Environment]::SetEnvironmentVariable("TEST_PASSWORD", "sua-senha-de-teste", "User")
+npm ci
+npx playwright install chromium
+npm test
 ```
 
-Abra um novo terminal depois de usar `SetEnvironmentVariable`.
-
-## Executando os testes
-
-Na raiz do projeto, execute todos os cenarios:
+Os cenários de login e o teste de e-mail existente usam a conta indicada pelas variáveis `PLAYWRIGHT_USER` e `PLAYWRIGHT_PASS`. Configure-as no terminal antes de executar os testes:
 
 ```powershell
-mvn clean test
+$env:PLAYWRIGHT_USER = "seu-email-de-teste@example.com"
+$env:PLAYWRIGHT_PASS = "sua-senha-de-teste"
+npm test
 ```
 
-Para executar apenas o cenario de cadastro:
+Para listar os testes sem executá-los:
 
 ```powershell
-mvn "-Dtest=runner.RunCucumberTest" "-Dcucumber.filter.name=Register User" test
+npx playwright test --list
 ```
-## Estrutura
+
+Para executar somente um arquivo:
+
+```powershell
+npx playwright test tests/login.spec.ts
+npx playwright test tests/registration.spec.ts
+```
+
+O relatório HTML é gerado em `playwright-report/`. Para abri-lo depois da execução:
+
+```powershell
+npx playwright show-report
+```
+
+### Estrutura do Playwright
 
 ```text
-src/
-├── test/
-│   ├── java/
-│   │   ├── core/       # DriverFactory e acoes comuns do BasePage
-│   │   ├── hooks/      # Inicializacao e encerramento do navegador
-│   │   ├── pages/      # Page Objects
-│   │   ├── runner/     # Runner JUnit Platform do Cucumber
-│   │   ├── steps/      # Step Definitions
-│   │   └── utils/       # Dados de teste e credenciais
-│   └── resources/
-│       ├── features
-│       └── junit-platform.properties
-├── main/java/org/example/automacao/Main.java
-
+tests/
+├── login.spec.ts
+├── registration.spec.ts
+├── pages/       # Page Objects e interações com a interface
+└── utils/       # Credenciais e geração de dados de teste
+package.json
+package-lock.json
+playwright.config.ts
+tsconfig.json
 ```
-## Observacoes
-
-- O cenario de cadastro usa dados gerados pelo DataFaker.
-- A conta usada nos cenarios de login precisa existir no ambiente de teste.
